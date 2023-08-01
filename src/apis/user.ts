@@ -6,6 +6,7 @@ enum Api {
   GetUserInfo = "/user/info",
   GetUserAccess = "/user/access",
   GetPermCode = "/dili-uap/api/authenticationApi/getResources",
+  GetMenuList = "/dili-uap/api/authenticationApi/getMenuList",
 }
 
 export function fetchLogin() {
@@ -32,5 +33,19 @@ export function fetchLogout() {
   return request({
     url: Api.Logout,
     method: "post",
+  });
+}
+
+export function getPermCodeList() {
+  return request({
+    url: Api.GetPermCode,
+    method: "get",
+  });
+}
+
+export function getMenuList() {
+  return request({
+    url: Api.GetMenuList,
+    method: "get",
   });
 }

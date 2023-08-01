@@ -6,7 +6,9 @@ export function createPageLoadingGuard(router) {
 
   router.afterEach(() => {
     // to and from are both route objects.
-    window.$loadingBar?.finish();
+    setTimeout(() => {
+      window.$loadingBar?.finish();
+    }, 200);
   });
 
   router.onError(() => {

@@ -11,7 +11,6 @@ const router = useRouter();
 onBeforeMount(() => {
   const { params, query } = route;
   const { path } = params;
-  console.log("path,,,,,,,", path);
 
   router.replace({
     path: "/" + (Array.isArray(path) ? path.join("/") : path),

@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import { asyncRoutes, basicRoutes } from "@/router/routes";
+import { getMenuList, getPermCodeList } from "@/apis/user";
+import { AppRouteRecordRaw } from "@/router/types";
 
 function hasPermission(route, access) {
   // * 不需要权限直接返回true
@@ -40,11 +42,13 @@ function filterAsyncRoutes(routes: any[] = [], access) {
 }
 
 export interface PermissionState {
+  permCodeList: string[] | number[];
   accessRoutes: any[];
 }
 
 export const usePermissionStore = defineStore("permission", {
   state: (): PermissionState => ({
+    permCodeList: [],
     accessRoutes: [],
   }),
   getters: {
@@ -63,6 +67,30 @@ export const usePermissionStore = defineStore("permission", {
       const accessRoutes = filterAsyncRoutes(asyncRoutes, access);
       this.accessRoutes = accessRoutes;
       return accessRoutes;
+    },
+    setPermCodeList(codeList: string[]) {
+      this.permCodeList = codeList;
+    },
+    async getPermCodeList() {
+      const { data } = await getPermCodeList();
+      const { codeList } = data;
+      this.setPermCodeList(codeList);
+    },
+    async buildRoutesAction() {
+      window.$message.loading({
+        content: "菜单加载中...",
+        duration: 1,
+      });
+
+      let routeList: AppRouteRecordRaw[] = [];
+      try {
+        this.getPermCodeList();
+        const { data } = await getMenuList();
+        routeList = data.routeList as AppRouteRecordRaw[];
+      } catch (error) {
+        console.warn(error);
+      }
+      // 处理routeList
     },
   },
 });
