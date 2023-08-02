@@ -4,6 +4,7 @@
       <component :is="Component" />
     </router-view>
   </AppProvider>
+  <portal-target name="keyboard-comp"></portal-target>
 </template>
 
 <script setup lang="ts">
